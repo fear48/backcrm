@@ -2,7 +2,7 @@ const config = {
   secret: "super",
   database: "mongodb://develop:examplepass@ds055742.mlab.com:55742/backendcrm",
   values: {
-    paymentExpiresAt: 18,
+    paymentExpiresAt: 1,
     prepaidPercent: 50,
     salePercent: 50
   }
