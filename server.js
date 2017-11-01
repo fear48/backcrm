@@ -30,7 +30,7 @@ mongoose.Promise = global.Promise;
 mongoose
   .connect(config.database, { useMongoClient: true })
   .then(() => {
-    console.log("Connecten successfully");
+    console.log("Connected successfully");
   })
   .catch(err => {
     throw new Error(err);

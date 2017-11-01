@@ -12,7 +12,7 @@ agenda.define('delete old events', (job, done) => {
   const date = new Date();
   date.setHours(date.getHours() - paymentExpiresAt)
   //Event.remove({ createdAt: { $lt: date }, paid: false }, done);
-  Events.updata({ createdAt: { $lt: date }, paid: false }, {cancelled: true}, done);
+  Event.updateOne({ createdAt: { $lt: date }, paid: false }, {cancelled: true}, done);
   console.log('Agenda "delete old events" completed: ', date.toLocaleTimeString())
 });
 
