@@ -123,5 +123,9 @@ export default {
       .catch(err => {
         next({ status: 403, message: err.message });
       });
+  },
+  yandex: (req, res, next) => {
+    console.log(req);
+    res.status(200).send();
   }
 };
