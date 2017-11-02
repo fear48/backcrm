@@ -1,6 +1,8 @@
 import Transaction from "../models/transactionModel";
 import User from "../models/userModel";
-import Category from "../models/categoryModel"
+import Category from "../models/categoryModel";
+import Event from '../models/eventModel';
+import Client from '../models/clientModel';
 
 export default {
   getAllTransactions: (req, res, next) => {
@@ -14,25 +16,42 @@ export default {
   },
   addNewTransaction: (req, res, next) => {
     const { uid, category } = req.body;
-    User.findById(uid).then(({ name, surname, phoneNumber }) =>
-      Category.findOne({ _id: category })
-        .then(cate =>
-          Transaction({
-            ...req.body,
-            categoryName: cate.name,
-            name,
-            surname,
-            phoneNumber
-          }).save()
-        )
-        .then(() => Transaction.find({}))
-        .then(response => {
-          res.send(response);
-        })
-        .catch(err => {
-          next({ status: 500, message: err.message });
-        })
-    );
+    User.findById(uid).then(({ name, surname, phoneNumber }) => {
+      if (category) {
+        Category.findOne({ _id: category })
+          .then(cate =>
+            Transaction({
+              ...req.body,
+              categoryName: cate.name,
+              name,
+              surname,
+              phoneNumber
+            }).save()
+          )
+          .then(() => Transaction.find({}))
+          .then(response => {
+            res.send(response);
+          })
+          .catch(err => {
+            next({ status: 500, message: err.message });
+          })
+      } else {
+        Transaction({
+          ...req.body,
+          categoryName: 'Бронирование',
+          name,
+          surname,
+          phoneNumber
+        }).save()
+          .then(() => Transaction.find({}))
+          .then(response => {
+            res.send(response);
+          })
+          .catch(err => {
+            next({ status: 500, message: err.message });
+          })
+      }
+    })
   },
   getTransactioById: (req, res, next) => {
     const { id } = req.params;
@@ -125,7 +144,38 @@ export default {
       });
   },
   yandex: (req, res, next) => {
-    console.log(req.body);
+    const { label, withdraw_amount } = req.body;
+    let name, surname, phoneNumber;
+    Event.findOneAndUpdate({ _id: label }, { paid: true })
+      .then(response =>
+        Transaction({
+          name: response.title.split('')[0],
+          surname: response.title.split('')[1],
+          phoneNumber: response.phoneNumber,
+          uid: '5996f78dd515bf21602c44c1',
+          sum: withdraw_amount,
+          type: 1,
+          payType: 0
+        }).save()
+      )
+      .then((response) => {
+        name = response.name;
+        surname = response.surname;
+        phoneNumber = response.phoneNumber;
+
+        return Client.find({ phoneNumber: response.phoneNumber })
+      })
+      .then(response => {
+        if (response.length === 0) {
+          return Client({ name, surname, phoneNumber }).save()
+        }
+      })
+      .then(response => {
+        console.log("Transactions Accepted")
+      })
+      .catch(err => {
+        next({ status: 403, message: err.message })
+      })
     res.status(200).send();
   }
 };

@@ -10,7 +10,7 @@ const TransactionModel = new Schema({
   date: { type: Date, default: new Date() },
   sum: { type: Number, required: true },
   type: { type: Number, required: true },
-  category: { type: String, required: true },
+  category: { type: String, required: false },
   categoryName: { type: String },
   payType: { type: Number, required: true }
 });
