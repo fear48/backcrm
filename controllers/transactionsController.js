@@ -149,8 +149,8 @@ export default {
     Event.findOneAndUpdate({ _id: label }, { paid: true })
       .then(response =>
         Transaction({
-          name: response.title.split('')[0],
-          surname: response.title.split('')[1],
+          name: response.title.split(' ')[0],
+          surname: response.title.split(' ')[1],
           phoneNumber: response.phoneNumber,
           uid: '5996f78dd515bf21602c44c1',
           sum: withdraw_amount,
