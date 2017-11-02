@@ -23,8 +23,7 @@ export default {
             Transaction({
               ...req.body,
               categoryName: cate.name,
-              name,
-              surname,
+              name: `${name} ${surname}`,
               phoneNumber
             }).save()
           )
@@ -39,8 +38,7 @@ export default {
         Transaction({
           ...req.body,
           categoryName: 'Бронирование',
-          name,
-          surname,
+          name: `${name} ${surname}`,
           phoneNumber
         }).save()
           .then(() => Transaction.find({}))
@@ -74,8 +72,7 @@ export default {
               .findOneAndUpdate({ _id: id }, {
                 ...req.body,
                 categoryName: cate.name,
-                name,
-                surname,
+                name: `${name} ${surname}`,
                 phoneNumber
               })
           )
@@ -90,8 +87,7 @@ export default {
         Transaction
           .findOneAndUpdate({ _id: id }, {
             ...req.body,
-            name,
-            surname,
+            name: `${name} ${surname}`,
             phoneNumber
           })
           .then(() => Transaction.find({}))
@@ -145,12 +141,12 @@ export default {
   },
   yandex: (req, res, next) => {
     const { label, withdraw_amount } = req.body;
-    let name, surname, phoneNumber;
+    let name, phoneNumber;
+    res.status(200).send();
     Event.findOneAndUpdate({ _id: label }, { paid: true })
       .then(response =>
         Transaction({
-          name: response.title.split(' ')[0],
-          surname: response.title.split(' ')[1],
+          name: response.title,
           phoneNumber: response.phoneNumber,
           uid: '5996f78dd515bf21602c44c1',
           sum: withdraw_amount,
@@ -160,20 +156,20 @@ export default {
       )
       .then((response) => {
         name = response.name;
-        surname = response.surname;
         phoneNumber = response.phoneNumber;
 
         return Client.find({ phoneNumber: response.phoneNumber })
       })
       .then(response => {
-        if (response.length === 0) {
-          Client({ name: name + surname, phoneNumber }).save()
-        }
         console.log("Transactions Accepted")
+        if (response.length === 0) {
+          console.log("Client saved");
+          return Client({ name, phoneNumber }).save()
+        }
       })
       .catch(err => {
+        console.log(err.message);
         next({ status: 403, message: err.message })
       })
-    res.status(200).send();
   }
 };
