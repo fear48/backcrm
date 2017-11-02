@@ -167,10 +167,8 @@ export default {
       })
       .then(response => {
         if (response.length === 0) {
-          return Client({ name, surname, phoneNumber }).save()
+          Client({ name: name + surname, phoneNumber }).save()
         }
-      })
-      .then(response => {
         console.log("Transactions Accepted")
       })
       .catch(err => {
