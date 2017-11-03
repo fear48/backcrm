@@ -150,6 +150,7 @@ export default {
           phoneNumber: response.phoneNumber,
           uid: '5996f78dd515bf21602c44c1',
           sum: withdraw_amount,
+          categoryName: 'Бронирование',
           type: 1,
           payType: 0
         }).save()
