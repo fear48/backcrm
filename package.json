@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "agenda": "^1.0.0",
+    "axios": "^0.17.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
@@ -23,6 +24,7 @@
     "mongoose": "^4.11.6",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
+    "querystring": "^0.2.0",
     "randomstring": "^1.1.5",
     "simple-oauth2": "^1.4.0"
   },

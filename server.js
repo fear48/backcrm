@@ -42,6 +42,7 @@ mongoose
 agenda.on("ready", () => {
   console.log("Agenda connected to database");
   agenda.every("1 minute", "delete old events");
+  agenda.every("30 minutes", "get new token")
   agenda.start();
 });
 
@@ -55,32 +56,6 @@ app.use(
     limits: { fileSize: 50 * 1024 * 1024 }
   })
 );
-
-// TOKEN //
-
-const OAuth2 = google.auth.OAuth2;
-const scope = 'https://www.googleapis.com/auth/calendar';
-
-var oauth2Client = new OAuth2(
-  "148190024026-d3de7ud10fmjlan504l4qu3r1tl5bv1a.apps.googleusercontent.com",
-  "IR7C89RgT101GjMy7ulWItq_",
-  "http:/localhost:3001/api/google"
-);
-
-oauth2Client.setCredentials({
-  access_token: 'ya29.Glv5BNkHWcWNZi3TawGteUcdUWDqpbBgk16f3kcHXfg1EtFRPZOtO2vCFXXk6yliBWjJE5Ue2kQvyEMY6UpF2clc20bGSQVln4Io-Uajyi8KcsLmVyYHGWyJjn1W',
-  refresh_token: '1/waG7X40pksGCLPE4Pc04_pEApD_gs1CHdkeuvc9XMRw'
-  // Optional, provide an expiry_date (milliseconds since the Unix Epoch)
-  // expiry_date: (new Date()).getTime() + (1000 * 60 * 60 * 24 * 7)
-});
-
-oauth2Client.refreshAccessToken(function (err, tokens) {
-  console.log(tokens, err)
-});
-
-app.get("/api/google", (req, res, next) => {
-  console.log(req.body)
-})
 
 // PASSPORT //
 app.use(passport.initialize({}))
