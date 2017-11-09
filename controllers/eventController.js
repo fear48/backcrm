@@ -50,5 +50,19 @@ export default {
       .catch(err => {
         next({ status: 403, message: err.message });
       });
+  },
+  cheakDates: (req, res, next) => {
+    const { startDate, endDate } = req.body;
+    if (startDate < endDate) {
+      Event.find({ endDate: { $gte: startDate }, startDate: { $lte: endDate } })
+        .then(response => {
+          res.send(response[0]);
+        })
+        .catch(err => {
+          next({ status: 403, message: err.message });
+        });
+    } else {
+      next({ status: 403, message: "Wrong dates" });
+    }
   }
 };

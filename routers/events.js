@@ -8,7 +8,6 @@ router.post("/", eventController.addNewEvent);
 router.get("/:id", eventController.getEventById);
 router.delete("/:id", eventController.deleteEventById);
 router.put("/:id", eventController.changeEventInfo);
-
-// брони определенного пользователя
+router.post("/checkdates", eventController.cheakDates);
 
 export default router;
