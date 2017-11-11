@@ -42,7 +42,7 @@ mongoose
 agenda.on("ready", () => {
   console.log("Agenda connected to database");
   agenda.every("1 minute", "delete old events");
-  agenda.every("30 minutes", "get new token")
+  agenda.every("10 minutes", "get new token")
   agenda.start();
 });
 
