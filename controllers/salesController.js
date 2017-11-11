@@ -62,7 +62,7 @@ export default {
   cheakDates: (req, res, next) => {
     const { startDate, endDate } = req.body;
     if (startDate < endDate) {
-      Sale.find({ endDate: { $gte: startDate }, startDate: { $lte: endDate } })
+      Sale.find({ endDate: { $gt: startDate }, startDate: { $lt: endDate } })
         .then(response => {
           res.send(response[0]);
         })
