@@ -1,9 +1,9 @@
 const config = {
   secret: "super",
   database: "mongodb://develop:examplepass@ds055742.mlab.com:55742/backendcrm",
-  refresh_token: "1/kDxLnpCwt6-DCoTJQEoBa-FAXlnfdnQ-G_H510KSU2E",
-  client_id: "929440583804-ji2d98at7p118g7u4qdio5fvggs21cqs.apps.googleusercontent.com",
-  client_secret: "FRc34LoP2iaisTy3SJ4Ssu2N",
+  refresh_token: "1/SKhRUiHpY-IvstY3MVxPFe62cIYWgMRiBz3MmE3UldMu-zyDQnGI06gQwfurqWMK",
+  client_id: "1036675074126-glr8qbdfkbd5pc263cdeh9cr37u5hvn1.apps.googleusercontent.com",
+  client_secret: "lR-90PcT_oTBWZtI10gvS_Gm",
   values: {
     paymentExpiresAt: 1,
     prepaidPercent: 50,
