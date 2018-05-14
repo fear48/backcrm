@@ -6,7 +6,9 @@ import Client from '../models/clientModel';
 import Nodemailer from "nodemailer";
 
 let transporter = Nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
     user: 'obscurcrm@gmail.com',
     pass: 'obscurpassadmin'
