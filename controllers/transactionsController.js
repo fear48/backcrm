@@ -167,7 +167,7 @@ export default {
           categoryName: 'Бронирование',
           type: 1,
           payType: 0
-        }).save();
+        }).save()
       )
       .then((response) => {
         name = response.name;
