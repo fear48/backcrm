@@ -158,7 +158,7 @@ export default {
     console.log(req.body);
     let name, phoneNumber;
     res.status(200).send();
-    Event.findOneAndUpdate({ _id: label }, { paid: true })
+    Event.findOneAndUpdate({ _id: label }, { paid: true, cancelled: false })
       .then(response =>
         Transaction({
           name: response.title,
@@ -168,6 +168,7 @@ export default {
           type: 1,
           payType: 0
         }).save()
+        console.log(response);
       )
       .then((response) => {
         name = response.name;
