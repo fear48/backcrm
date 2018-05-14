@@ -4,8 +4,8 @@ import Nodemailer from "nodemailer";
 let transporter = Nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'hlopyannikov@gmail.com',
-    pass: 'Jackpot3527272pw'
+    user: 'obscurcrm@gmail.com',
+    pass: 'obscurpassadmin'
   }
 });
 
@@ -27,16 +27,16 @@ export default {
       .then(response => {
         res.send(response);
         let mailOptions = {
-          from: 'OBSCUR <hlopyannikov@gmail.com>',
-          to: 'mail@obscur.pro',
+          from: 'OBSCUR <obscurcrm@gmail.com>',
+          to: 'mail@obscur.pro, '+ params.email,
           subject: 'Новая запись была добавлена',
           html: '<p>Номер телефона: '+ params.phoneNumber +'</br>Зал: '+ params.roomId +'</br>Начало: '+ params.startDate +'</br>Конец: '+ params.endDate +'</br>Статус оплаты: '+ params.paid +' </p>'
         };
         transporter.sendMail(mailOptions, function(err, info){
           if(err){
-            console.log(err);
+            console.log(err, 'error');
           }else{
-            console.log(info);
+            console.log(info, 'success');
           }
         });
       })
