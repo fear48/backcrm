@@ -16,40 +16,54 @@ export default {
   },
   addNewTransaction: (req, res, next) => {
     const { uid, category } = req.body;
-    User.findById(uid).then(({ name, surname, phoneNumber }) => {
-      if (category) {
-        Category.findOne({ _id: category })
-          .then(cate =>
-            Transaction({
-              ...req.body,
-              categoryName: cate.name,
-              name: `${name} ${surname}`,
-              phoneNumber
-            }).save()
-          )
-          .then(() => Transaction.find({}))
-          .then(response => {
-            res.send(response);
-          })
-          .catch(err => {
-            next({ status: 500, message: err.message });
-          })
-      } else {
-        Transaction({
-          ...req.body,
-          categoryName: 'Бронирование',
-          name: `${name} ${surname}`,
-          phoneNumber
-        }).save()
-          .then(() => Transaction.find({}))
-          .then(response => {
-            res.send(response);
-          })
-          .catch(err => {
-            next({ status: 500, message: err.message });
-          })
-      }
-    })
+    if(uid){
+      User.findById(uid).then(({ name, surname, phoneNumber }) => {
+        if (category) {
+          Category.findOne({ _id: category })
+            .then(cate =>
+              Transaction({
+                ...req.body,
+                categoryName: cate.name,
+                name: `${name} ${surname}`,
+                phoneNumber
+              }).save()
+            )
+            .then(() => Transaction.find({}))
+            .then(response => {
+              res.send(response);
+            })
+            .catch(err => {
+              next({ status: 500, message: err.message });
+            })
+        } else {
+          Transaction({
+            ...req.body,
+            categoryName: 'Бронирование',
+            name: `${name} ${surname}`,
+            phoneNumber
+          }).save()
+            .then(() => Transaction.find({}))
+            .then(response => {
+              res.send(response);
+            })
+            .catch(err => {
+              next({ status: 500, message: err.message });
+            })
+        }
+      })
+    }else{
+      Transaction({
+        ...req.body,
+        categoryName: 'Бронирование'
+      }).save()
+        .then(() => Transaction.find({}))
+        .then(response => {
+          res.send(response);
+        })
+        .catch(err => {
+          next({ status: 500, message: err.message });
+        })
+    }
   },
   getTransactioById: (req, res, next) => {
     const { id } = req.params;
@@ -141,6 +155,7 @@ export default {
   },
   yandex: (req, res, next) => {
     const { label, withdraw_amount } = req.body;
+    console.log(req.body);
     let name, phoneNumber;
     res.status(200).send();
     Event.findOneAndUpdate({ _id: label }, { paid: true })
@@ -148,7 +163,6 @@ export default {
         Transaction({
           name: response.title,
           phoneNumber: response.phoneNumber,
-          uid: '5996f78dd515bf21602c44c1',
           sum: withdraw_amount,
           categoryName: 'Бронирование',
           type: 1,

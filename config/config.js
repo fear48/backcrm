@@ -1,6 +1,6 @@
 const config = {
   secret: "super",
-  database: "mongodb://root:200000@ds161346.mlab.com:61346/obscur",
+  database: "mongodb://genuris:200000@ds147534.mlab.com:47534/obs",
   refresh_token: "1/SKhRUiHpY-IvstY3MVxPFe62cIYWgMRiBz3MmE3UldMu-zyDQnGI06gQwfurqWMK",
   client_id: "1036675074126-glr8qbdfkbd5pc263cdeh9cr37u5hvn1.apps.googleusercontent.com",
   client_secret: "lR-90PcT_oTBWZtI10gvS_Gm",

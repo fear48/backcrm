@@ -30,7 +30,7 @@ const app = express();
 // CONNECTING TO DB //
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(config.database, { useMongoClient: true })
+  .connect(config.database, { useMongoClient: true, autoReconnect: true, keepAlive: true, })
   .then(() => {
     console.log("Connected successfully");
   })
@@ -38,9 +38,21 @@ mongoose
     throw new Error(err);
   });
 
+mongoose.connection.on("disconnected", function(){
+  mongoose
+    .connect(config.database, { useMongoClient: true, autoReconnect: true, keepAlive: true })
+    .then(() => {
+      console.log("Connected successfully");
+    })
+    .catch(err => {
+      throw new Error(err);
+    });
+});
+
 // AGENDA INITIALIZE ??
 agenda.on("ready", () => {
   console.log("Agenda connected to database");
+  agenda.now("get new token");
   agenda.every("1 minute", "delete old events");
   agenda.every("10 minutes", "get new token")
   agenda.start();
@@ -62,7 +74,7 @@ app.use(passport.initialize({}))
 passportConfig(passport);
 
 // LOGGING//
-// app.use(savingLogs);  may 
+// app.use(savingLogs);  may
 
 // ROUTES //
 app.use("/api", passportRouter);
