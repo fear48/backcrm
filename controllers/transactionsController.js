@@ -167,13 +167,12 @@ export default {
           categoryName: 'Бронирование',
           type: 1,
           payType: 0
-        }).save()
-        console.log(response);
+        }).save();
       )
       .then((response) => {
         name = response.name;
         phoneNumber = response.phoneNumber;
-
+        console.log(response);
         return Client.find({ phoneNumber: response.phoneNumber })
       })
       .then(response => {
