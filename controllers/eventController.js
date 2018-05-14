@@ -28,7 +28,7 @@ export default {
         res.send(response);
         let mailOptions = {
           from: 'OBSCUR <hlopyannikov@gmail.com>',
-          to: 'hlopyannikov@gmail.com',
+          to: 'mail@obscur.pro',
           subject: 'Новая запись была добавлена',
           html: '<p>Номер телефона: '+ params.phoneNumber +'</br>Зал: '+ params.roomId +'</br>Начало: '+ params.startDate +'</br>Конец: '+ params.endDate +'</br>Статус оплаты: '+ params.paid +' </p>'
         };
