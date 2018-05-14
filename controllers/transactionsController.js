@@ -171,7 +171,18 @@ export default {
     res.status(200).send();
     Event.findOneAndUpdate({ _id: label }, { paid: true, cancelled: false })
       .then(response => {
-          Transaction({
+        let mailOptions = {
+          from: 'OBSCUR <obscurcrm@gmail.com>',
+          to: 'mail@obscur.pro, '+ response.email,
+          subject: 'Бронирование успешно оплачено',
+          html: '<p><b>'+ response.title +'</b></br>Номер телефона: '+ response.phoneNumber +'</br>Зал: '+ response.roomId +'</br>Начало: '+ response.startDate +'</br>Конец: '+ response.endDate +'</br>Статус оплаты: '+ response.paid +', </br>Сумма: '+ response.sum +'</p>'
+        };
+        transporter.sendMail(mailOptions, function(err, info){
+          if(err){
+            console.log(err, 'error');
+          }
+        });
+          return Transaction({
             name: response.title,
             phoneNumber: response.phoneNumber,
             sum: amount,
@@ -180,17 +191,6 @@ export default {
             payType: 0,
             date: new Date()
           }).save();
-          let mailOptions = {
-            from: 'OBSCUR <obscurcrm@gmail.com>',
-            to: 'mail@obscur.pro, '+ response.email,
-            subject: 'Бронирование успешно оплачено',
-            html: '<p><b>'+ response.title +'</b></br>Номер телефона: '+ response.phoneNumber +'</br>Зал: '+ response.roomId +'</br>Начало: '+ response.startDate +'</br>Конец: '+ response.endDate +'</br>Статус оплаты: '+ response.paid +', </br>Сумма: '+ response.sum +'</p>'
-          };
-          transporter.sendMail(mailOptions, function(err, info){
-            if(err){
-              console.log(err, 'error');
-            }
-          });
         }
       )
       .then((response) => {
