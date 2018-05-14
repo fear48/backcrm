@@ -32,7 +32,7 @@ export default {
           from: 'OBSCUR <obscurcrm@gmail.com>',
           to: 'mail@obscur.pro, '+ params.email,
           subject: 'Новая запись была добавлена',
-          html: '<p>Номер телефона: '+ params.phoneNumber +'</br>Зал: '+ params.roomId +'</br>Начало: '+ params.startDate +'</br>Конец: '+ params.endDate +'</br>Статус оплаты: '+ params.paid +' </p>'
+          html: '<p><b>'+ params.title +'</b></br>Номер телефона: '+ params.phoneNumber +'</br>Зал: '+ params.roomId +'</br>Начало: '+ params.startDate +'</br>Конец: '+ params.endDate +'</br>Статус оплаты: '+ params.paid +' </p>'
         };
         transporter.sendMail(mailOptions, function(err, info){
           if(err){
