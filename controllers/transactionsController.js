@@ -175,7 +175,7 @@ export default {
           from: 'OBSCUR <obscurcrm@gmail.com>',
           to: 'mail@obscur.pro, '+ response.email,
           subject: 'Бронирование успешно оплачено',
-          html: '<p><b>'+ response.title +'</b></br>Номер телефона: '+ response.phoneNumber +'</br>Зал: '+ response.roomId +'</br>Начало: '+ response.startDate +'</br>Конец: '+ response.endDate +'</br>Статус оплаты: '+ response.paid +', </br>Сумма: '+ response.sum +' рублей</p>'
+          html: '<p><b>'+ response.title +'</b></br>Номер телефона: '+ response.phoneNumber +'</br>Зал: '+ response.roomId +'</br>Начало: '+ response.startDate.toLocaleString('ru RU') +'</br>Конец: '+ response.endDate.toLocaleString('ru RU') +'</br>Статус оплаты: Оплачено, </br>Сумма: '+ response.sum +' рублей</p>'
         };
         transporter.sendMail(mailOptions, function(err, info){
           if(err){
