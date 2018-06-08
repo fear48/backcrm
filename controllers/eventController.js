@@ -48,7 +48,7 @@ export default {
   },
   getEventById: (req, res, next) => {
     const { id } = req.params;
-    Event.findOne(id)
+    Event.findOne({ _id: id })
       .then(response => {
         res.send(response);
       })

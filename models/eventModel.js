@@ -13,14 +13,14 @@ const EventModel = new Schema({
   eventId: { type: String, required: true },
   paid: { type: Boolean, default: false, required: true },
   roomId: { type: String, required: true },
-  phoneNumber: { type: Number, required: true },
+  phoneNumber: { type: String, required: true },
   uid: { type: String, required: false },
   sum: { type: Number, required: true },
   eventType: { type: String, required: true },
   members: { type: String, required: true },
   paymentType: { type: Number, required: true },
   comment: { type: String, required: false },
-  recall: { type: Boolean, dafault: false },
+  target: { type: Number, required: false },
   createdAt: { type: Date, default: new Date(), required: true }
 });
 

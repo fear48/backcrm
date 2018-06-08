@@ -41,6 +41,20 @@ export default {
         next({ status: 403, message: err.message });
       });
   },
+  changeHistoryInfoByEventId: (req, res, next) => {
+    const { id } = req.params;
+    console.log(id, req.params);
+    History.findOneAndUpdate({
+      eventId: id
+    }, req.body)
+      .then(response => History.find({}))
+      .then(response => {
+        res.send(response);
+      })
+      .catch(err => {
+        next({ status: 403, message: err.message });
+      });
+  },
   deleteHistory: (req, res, next) => {
     const { id } = req.params;
     History.findByIdAndRemove(id)
