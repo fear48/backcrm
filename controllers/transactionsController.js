@@ -3,6 +3,7 @@ import User from "../models/userModel";
 import Category from "../models/categoryModel";
 import Event from '../models/eventModel';
 import Client from '../models/clientModel';
+import History from '../models/historyModel';
 import Nodemailer from "nodemailer";
 
 let transporter = Nodemailer.createTransport({
@@ -175,13 +176,15 @@ export default {
           from: 'OBSCUR <obscurcrm@gmail.com>',
           to: 'mail@obscur.pro, '+ response.email,
           subject: 'Бронирование успешно оплачено',
-          html: '<p><b>'+ response.title +'</b></br>Номер телефона: '+ response.phoneNumber +'</br>Зал: '+ response.roomId +'</br>Начало: '+ response.startDate.toLocaleString('ru RU') +'</br>Конец: '+ response.endDate.toLocaleString('ru RU') +'</br>Статус оплаты: Оплачено, </br>Сумма: '+ response.sum +' рублей</p>'
+          html: '<p><b>'+ response.title +'</b></br>Номер телефона: '+ response.phoneNumber +'</br>Зал: '+ response.roomId +'</br>Начало: '+ response.startDate.toLocaleString() +'</br>Конец: '+ response.endDate.toLocaleString() +'</br>Статус оплаты: Оплачено, </br>Сумма: '+ response.sum +' рублей</p>'
         };
         transporter.sendMail(mailOptions, function(err, info){
           if(err){
             console.log(err, 'error');
           }
         });
+        History.findOneAndUpdate({ eventId: response._id }, { payStatus: 2 });
+
           return Transaction({
             name: response.title,
             phoneNumber: response.phoneNumber,
@@ -196,7 +199,7 @@ export default {
       .then((response) => {
         name = response.name;
         phoneNumber = response.phoneNumber;
-        console.log(response);
+        console.log(response, 'afterTransactionSaved');
         return Client.find({ phoneNumber: response.phoneNumber })
       })
       .then(response => {
