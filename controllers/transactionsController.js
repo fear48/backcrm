@@ -183,7 +183,13 @@ export default {
             console.log(err, 'error');
           }
         });
-        History.findOneAndUpdate({ eventId: response._id }, { payStatus: 2 });
+        console.log(response._id);
+        History.findOneAndUpdate({ eventId: response._id }, { payStatus: 2 }).then(function(res){
+          console.log(res, 'FINDANDupdate');
+          // History({
+          //   payStatus: 2
+          // }).save();
+        });
 
           return Transaction({
             name: response.title,
