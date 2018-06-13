@@ -1,5 +1,6 @@
 import Event from "../models/eventModel";
 import Nodemailer from "nodemailer";
+import moment from "moment";
 
 let transporter = Nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -76,6 +77,23 @@ export default {
       .catch(err => {
         next({ status: 403, message: err.message });
       });
+  },
+  getEventsByDate: (req, res, next) => {
+    console.log(req.body);
+    let { startDate, endDate } = req.body;
+    // startDate.setHours(0, 0, 0);
+    // let endDate = startDate;
+    // endDate.setDate(startDate.getDate() + 2)
+    // console.log(startDate, endDate);
+
+    Event.find({ startDate: { $gt: startDate }, endDate: { $lt: endDate }, cancelled: false})
+      .then(response => {
+        res.send(response);
+      })
+      .catch(err => {
+        next({ status: 403, message: err.message });
+      });
+
   },
   cheakDates: (req, res, next) => {
     const { startDate, endDate, roomId } = req.body;

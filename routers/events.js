@@ -9,5 +9,6 @@ router.get("/:id", eventController.getEventById);
 router.delete("/:id", eventController.deleteEventById);
 router.put("/:id", eventController.changeEventInfo);
 router.post("/checkdates", eventController.cheakDates);
+router.post("/geteventsbydate", eventController.getEventsByDate);
 
 export default router;
