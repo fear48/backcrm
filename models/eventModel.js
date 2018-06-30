@@ -8,6 +8,7 @@ const EventModel = new Schema({
   endDate: { type: Date, required: true },
   prepaid: { type: Boolean, default: false, required: true },
   email: { type: String, required: false },
+  grimId: { type: String, required: false },
   cancelled: { type: Boolean, required: false },
   calendarId: { type: String, required: true },
   eventId: { type: String, required: true },

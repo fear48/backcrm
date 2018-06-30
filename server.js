@@ -6,7 +6,6 @@ import cors from "cors";
 import fileUpload from "express-fileupload";
 import oauth2 from 'simple-oauth2';
 import google from 'googleapis';
-
 import config from "./config/config";
 import passportConfig from "./config/passport";
 import usersRouter from "./routers/users";

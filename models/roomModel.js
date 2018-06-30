@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const RoomModel = new Schema({
   roomName: { type: String, required: true },
   type: { type: Number, required: true },
+  images: { type: [], default: [] },
   weekEarlyPricePhoto: { type: Number, required: true },
   weekBasePricePhoto: { type: Number, required: true },
   weekLatePricePhoto: { type: Number, required: true },

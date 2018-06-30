@@ -1,4 +1,5 @@
 import Event from "../models/eventModel";
+import Room from "../models/roomModel";
 import Nodemailer from "nodemailer";
 import moment from "moment";
 
@@ -11,6 +12,21 @@ let transporter = Nodemailer.createTransport({
     pass: 'obscurpassadmin'
   }
 });
+
+const findRoom = (id) => {
+  console.log(id, "ID");
+   Room.findOne({ _id: id }).then((res) => {
+    if(res){
+      console.log(res.roomName, "GETTED ROOM");
+      return res.roomName;
+    }else{
+      return false;
+    }
+  }).catch((err) => {
+    console.log(err);
+    //next({ status: 403, message: err.message });
+  });
+};
 
 export default {
   getAllEvents: (req, res, next) => {
@@ -69,26 +85,71 @@ export default {
   },
   changeEventInfo: (req, res, next) => {
     const { id } = req.params;
-    Event.findByIdAndUpdate(id, req.body)
-      .then(response => Event.find({}))
-      .then(response => {
-        res.send(response);
-      })
-      .catch(err => {
+    const { grimId } = req.body;
+
+    if(grimId !== null && grimId !== undefined && grimId){
+      console.log(req.body, "GRIM NOT NULL");
+
+       Event.findOneAndUpdate({ _id: grimId }, {$set:{paid:true, cancelled: false}}, {
+         new: true
+       }).then((result) => {
+        console.log(result, "FIND WITH GRIM AND SAVED");
+        //res.send(result);
+      }).catch((err) => {
         next({ status: 403, message: err.message });
       });
+      Event.findByIdAndUpdate(id, req.body)
+        .then(response => Event.find({}))
+        .then(response => {
+          res.send(response);
+        })
+        .catch(err => {
+          next({ status: 403, message: err.message });
+        });
+    }else{
+      console.log('grim not found');
+       Event.findOneAndUpdate({ grimId: id }, req.body, {new: true}).then((res) => {
+        console.log(res, 'res found AND SAVED');
+      }).catch(err => {
+        next({ status: 403, message: err.message });
+      });
+      Event.findByIdAndUpdate(id, req.body)
+        .then(response => Event.find({}))
+        .then(response => {
+          res.send(response);
+        })
+        .catch(err => {
+          next({ status: 403, message: err.message });
+        });
+    }
+    
   },
+
   getEventsByDate: (req, res, next) => {
-    console.log(req.body);
     let { startDate, endDate } = req.body;
-    // startDate.setHours(0, 0, 0);
-    // let endDate = startDate;
-    // endDate.setDate(startDate.getDate() + 2)
+    // startDate = startDate.setHours(0, 0, 0);
+    // endDate = startDate;
+    // endDate = endDate.setDate(startDate.getDate() + 2)
     // console.log(startDate, endDate);
 
     Event.find({ startDate: { $gt: startDate }, endDate: { $lt: endDate }, cancelled: false})
-      .then(response => {
-        res.send(response);
+      .lean().then(async (response) => {
+        const items = [];
+        for(let item of response){
+          let room = await Room.findOne({ _id: item.roomId }).lean();
+          if(room !== null){
+            console.log(room,'123');
+            items.push({
+              ...item,
+              roomName: room.roomName,
+              roomColor: room.color
+            });
+          }else{
+            items.push(item);
+          }
+        }
+        res.send(items);
+
       })
       .catch(err => {
         next({ status: 403, message: err.message });
