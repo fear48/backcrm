@@ -100,7 +100,8 @@ app.use(errorHandler); // Always last (error handler)
 
 // STARTING SERVER //
 const port = process.env.port || 3001;
-app.listen(port, err => {
+const serv = app.listen(port, err => {
   if (err) throw err;
   console.log(`Server started on port ${port}`);
 });
+serv.timeout = 240000;
