@@ -69,8 +69,8 @@ app.use(
 );
 
 // PASSPORT //
-app.use(passport.initialize({}))
-passportConfig(passport);
+// app.use(passport.initialize({}))
+// passportConfig(passport);
 
 // LOGGING//
 // app.use(savingLogs);  may

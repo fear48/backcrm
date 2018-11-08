@@ -184,6 +184,7 @@ export default {
           }
         });
         console.log(response._id);
+        
         History.findOneAndUpdate({ eventId: response._id }, { payStatus: 2 }).then(function(res){
           console.log(res, 'FINDANDupdate');
           // History({
