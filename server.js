@@ -88,7 +88,7 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/logs", logsRouter);
 app.use("/api/tasks", tasksRouter);
-app.use(passport.authenticate("jwt", { session: false })); // cheak if unauthorized
+//app.use(passport.authenticate("jwt", { session: false })); // cheak if unauthorized
 
 // ERRORS
 app.use((req, res, next) => {
