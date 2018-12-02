@@ -15,6 +15,8 @@ let transporter = Nodemailer.createTransport({
     pass: 'obscurpassadmin'
   }
 });
+const api_id = "B1578DE4-D57E-90F1-F08C-C68800DB8273";
+
 
 export default {
   getAllTransactions: (req, res, next) => {
@@ -42,7 +44,20 @@ export default {
             )
             .then(() => Transaction.find({}))
             .then(response => {
+              let msg = "Спасибо!+Ваша+бронь+была+успешно+оплачена";
+              let number = params.phoneNumber.replace(/\D/g, "");
               res.send(response);
+
+              axios({
+                method: "POST",
+                url: `https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`
+              }).then(res => {
+                console.log(res);
+
+              }).catch(err => {
+                console.log(err);
+                next({ status: 500, message: err.message });
+              });
             })
             .catch(err => {
               next({ status: 500, message: err.message });
@@ -57,6 +72,18 @@ export default {
             .then(() => Transaction.find({}))
             .then(response => {
               res.send(response);
+              let msg = "Спасибо!+Ваша+бронь+была+успешно+оплачена";
+              let number = params.phoneNumber.replace(/\D/g, "");
+
+              axios({
+                method: "POST",
+                url: `https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`
+              }).then(res => {
+                console.log(res);
+              }).catch(err => {
+                console.log(err);
+                next({ status: 500, message: err.message });
+              });
             })
             .catch(err => {
               next({ status: 500, message: err.message });

@@ -2,6 +2,7 @@ import Event from "../models/eventModel";
 import Room from "../models/roomModel";
 import Nodemailer from "nodemailer";
 import moment from "moment";
+import axios from "axios";
 
 let transporter = Nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -12,6 +13,8 @@ let transporter = Nodemailer.createTransport({
     pass: 'obscurpassadmin'
   }
 });
+
+const api_id = "B1578DE4-D57E-90F1-F08C-C68800DB8273";
 
 const findRoom = (id) => {
   console.log(id, "ID");
@@ -45,6 +48,21 @@ export default {
       .save()
       .then(response => {
         res.send(response);
+        let start = params.startDate.replace(/ /g, "");
+        let end = params.endDate.replace(/ /g, "");
+        let number = params.phoneNumber.replace(/\D/g, "");
+        let msg = `Ваша+бронь+была+успешно+добавлена!`;
+        console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
+        axios({
+          method: "POST",
+          url: `https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`
+        }).then(res => {
+          console.log(res);
+        }).catch(err => {
+          console.log(err);
+          next({ status: 500, message: err.message });
+        });
+
         let mailOptions = {
           from: 'OBSCUR <obscurcrm@gmail.com>',
           to: 'mail@obscur.pro, '+ params.email,
