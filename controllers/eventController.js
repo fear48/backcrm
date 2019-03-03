@@ -3,6 +3,7 @@ import Room from "../models/roomModel";
 import Nodemailer from "nodemailer";
 import moment from "moment";
 import axios from "axios";
+import querystring from 'querystring';
 
 let transporter = Nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -51,7 +52,8 @@ export default {
         let start = params.startDate.replace(/ /g, "");
         let end = params.endDate.replace(/ /g, "");
         let number = params.phoneNumber.replace(/\D/g, "");
-        let msg = `Ваша+бронь+была+успешно+добавлена`;
+        let msg = querystring.stringify(`Уважаемый ${title}, Ваша бронь была успешно добавлена! Фотостудия Obscur`);
+
         console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
         axios({
           method: "POST",
