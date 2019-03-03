@@ -62,7 +62,7 @@ export default {
         console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
         
 
-        return axios({
+        axios({
           method: "POST",
           url: `https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`
         }).then(res => {
@@ -74,7 +74,7 @@ export default {
               console.log(info, 'success');
             }
           });
-          res.send(res);
+          res.send(response);
         }).catch(err => {
           console.log(err);
           next({ status: 500, message: err.message });
