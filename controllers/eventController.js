@@ -60,20 +60,20 @@ export default {
           html: '<p><b>'+ params.title +'</b></br>Номер телефона: '+ params.phoneNumber +'</br>Зал: '+ params.roomId +'</br>Начало: '+ params.startDate +'</br>Конец: '+ params.endDate +'</br>Статус оплаты: '+ params.paid +' </p>'
         };
         console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
-        transporter.sendMail(mailOptions, function(err, info){
-          if(err){
-            console.log(err, 'error');
-          }else{
-            console.log(info, 'success');
-          }
-        });
+        
 
         return axios({
           method: "POST",
           url: `https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`
         }).then(res => {
           console.log(res);
-          res.send(res);
+          transporter.sendMail(mailOptions, function(err, info){
+            if(err){
+              console.log(err, 'error');
+            }else{
+              console.log(info, 'success');
+            }
+          });
         }).catch(err => {
           console.log(err);
           next({ status: 500, message: err.message });
