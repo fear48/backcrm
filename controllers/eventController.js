@@ -53,25 +53,13 @@ export default {
         let end = params.endDate.replace(/ /g, "");
         let number = params.phoneNumber.replace(/\D/g, "");
         let msg = querystring.stringify(`Уважаемый ${title}, Ваша бронь была успешно добавлена! Фотостудия Obscur`);
-
-        console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
-        axios({
-          method: "POST",
-          url: `https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`
-        }).then(res => {
-          console.log(res);
-        }).catch(err => {
-          console.log(err);
-          next({ status: 500, message: err.message });
-          console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
-        });
-
         let mailOptions = {
           from: 'OBSCUR <obscurcrm@gmail.com>',
           to: 'mail@obscur.pro, '+ params.email,
           subject: 'Новая запись была добавлена',
           html: '<p><b>'+ params.title +'</b></br>Номер телефона: '+ params.phoneNumber +'</br>Зал: '+ params.roomId +'</br>Начало: '+ params.startDate +'</br>Конец: '+ params.endDate +'</br>Статус оплаты: '+ params.paid +' </p>'
         };
+        console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
         transporter.sendMail(mailOptions, function(err, info){
           if(err){
             console.log(err, 'error');
@@ -79,6 +67,20 @@ export default {
             console.log(info, 'success');
           }
         });
+
+        return axios({
+          method: "POST",
+          url: `https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`
+        }).then(res => {
+          console.log(res);
+          res.send(res);
+        }).catch(err => {
+          console.log(err);
+          next({ status: 500, message: err.message });
+        });
+
+        
+        
       })
       .catch(err => {
         next({ status: 500, message: err.message });
