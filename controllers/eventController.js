@@ -51,7 +51,7 @@ export default {
         let start = params.startDate.replace(/ /g, "");
         let end = params.endDate.replace(/ /g, "");
         let number = params.phoneNumber.replace(/\D/g, "");
-        let msg = `Ваша+бронь+была+успешно+добавлена!`;
+        let msg = `Ваша+бронь+была+успешно+добавлена`;
         console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
         axios({
           method: "POST",
@@ -61,6 +61,7 @@ export default {
         }).catch(err => {
           console.log(err);
           next({ status: 500, message: err.message });
+          console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
         });
 
         let mailOptions = {
