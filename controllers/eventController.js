@@ -48,7 +48,7 @@ export default {
     Event(req.body)
       .save()
       .then(response => {
-        res.send(response);
+        
         let start = params.startDate.replace(/ /g, "");
         let end = params.endDate.replace(/ /g, "");
         let number = params.phoneNumber.replace(/\D/g, "");
@@ -74,6 +74,7 @@ export default {
               console.log(info, 'success');
             }
           });
+          res.send(res);
         }).catch(err => {
           console.log(err);
           next({ status: 500, message: err.message });
