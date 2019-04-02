@@ -4,6 +4,9 @@ import Nodemailer from "nodemailer";
 import moment from "moment";
 import axios from "axios";
 import querystring from 'querystring';
+import SMSru from 'sms_ru';
+const api_id = "B1578DE4-D57E-90F1-F08C-C68800DB8273";
+const sms = new SMSru(api_id);
 
 let transporter = Nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -15,7 +18,6 @@ let transporter = Nodemailer.createTransport({
   }
 });
 
-const api_id = "B1578DE4-D57E-90F1-F08C-C68800DB8273";
 
 const findRoom = (id) => {
   console.log(id, "ID");
@@ -42,43 +44,61 @@ export default {
         next({ status: 403, message: err.message });
       });
   },
-  addNewEvent: (req, res, next) => {
+  addNewEvent: (req, resp, next) => {
     const params = req.body;
 
     Event(req.body)
       .save()
       .then(response => {
-        
         let start = params.startDate.replace(/ /g, "");
         let end = params.endDate.replace(/ /g, "");
         let number = params.phoneNumber.replace(/\D/g, "");
-        let msg = querystring.stringify(`Уважаемый ${title}, Ваша бронь была успешно добавлена! Фотостудия Obscur`);
+        const msg = 'Ваша бронь была успешно добавлена!';
         let mailOptions = {
           from: 'OBSCUR <obscurcrm@gmail.com>',
           to: 'mail@obscur.pro, '+ params.email,
           subject: 'Новая запись была добавлена',
           html: '<p><b>'+ params.title +'</b></br>Номер телефона: '+ params.phoneNumber +'</br>Зал: '+ params.roomId +'</br>Начало: '+ params.startDate +'</br>Конец: '+ params.endDate +'</br>Статус оплаты: '+ params.paid +' </p>'
         };
-        console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
-        
 
-        axios({
-          method: "POST",
-          url: `https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`
-        }).then(res => {
-          console.log(res);
-          transporter.sendMail(mailOptions, function(err, info){
-            if(err){
-              console.log(err, 'error');
-            }else{
-              console.log(info, 'success');
-            }
-          });
-          res.send(response);
-        }).catch(err => {
-          console.log(err);
-          next({ status: 500, message: err.message });
+        console.log(`https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`);
+
+        // axios({
+        //   method: "POST",
+        //   url: `https://sms.ru/sms/send?api_id=${api_id}&to=89295561994&msg=hello}&json=1`
+        // }).then(res => {
+        //   console.log(res);
+        // }).catch(err => {
+        //   console.log(err);
+        //   next({ status: 500, message: err.message });
+        // });
+
+        sms.sms_send({
+          to: number,
+          text: msg
+        }, function(e){
+          console.log(e.description);
+          resp.send(response);
         });
+
+        // return axios({
+        //   method: "POST",
+        //   url: `https://sms.ru/sms/send?api_id=${api_id}&to=${number}&msg=${msg}&json=1`
+        // }).then(res => {
+        //   console.log(res);
+        //   
+        //   transporter.sendMail(mailOptions, function(err, info){
+        //     if(err){
+        //       console.log(err, 'error');
+        //     }else{
+        //       console.log(info, 'success');
+        //     }
+        //   });
+          
+        // }).catch(err => {
+        //   console.log(err);
+        //   next({ status: 500, message: err.message });
+        // });
 
         
         

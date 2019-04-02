@@ -100,19 +100,18 @@ app.use(errorHandler); // Always last (error handler)
 
 // STARTING SERVER //
 const port = process.env.port || 3001;
-const api_id = "B1578DE4-D57E-90F1-F08C-C68800DB8273";
 const serv = app.listen(port, err => {
   if (err) throw err;
   console.log(`Server started on port ${port}`);
 
-  axios({
-    method: "POST",
-    url: `https://sms.ru/sms/send?api_id=${api_id}&to=89295561994&msg=hello}&json=1`
-  }).then(res => {
-    console.log(res);
-  }).catch(err => {
-    console.log(err);
-    next({ status: 500, message: err.message });
-  });
+  // axios({
+  //   method: "POST",
+  //   url: `https://sms.ru/sms/send?api_id=${api_id}&to=89295561994&msg=hello}&json=1`
+  // }).then(res => {
+  //   console.log(res);
+  // }).catch(err => {
+  //   console.log(err);
+  //   next({ status: 500, message: err.message });
+  // });
 });
 serv.timeout = 240000;
